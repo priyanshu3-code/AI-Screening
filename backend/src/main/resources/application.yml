@@ -13,7 +13,7 @@ server:
 
 huggingface:
   api:
-    url: https://api-inference.huggingface.co
+    url: https://router.huggingface.co/v1
     key: ${HUGGINGFACE_API_KEY:your_api_key_here}
 
 cors:

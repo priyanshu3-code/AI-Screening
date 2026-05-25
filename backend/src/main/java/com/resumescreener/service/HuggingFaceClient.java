@@ -1,5 +1,6 @@
 package com.resumescreener.service;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.extern.slf4j.Slf4j;
@@ -10,14 +11,16 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
 @Slf4j
 public class HuggingFaceClient {
 
-    @Value("${huggingface.api.url:https://api-inference.huggingface.co}")
+    @Value("${huggingface.api.url:https://router.huggingface.co/v1}")
     private String apiUrl;
 
     @Value("${huggingface.api.key}")
@@ -40,18 +43,24 @@ public class HuggingFaceClient {
                 headers.setContentType(MediaType.APPLICATION_JSON);
 
                 Map<String, Object> requestBody = new HashMap<>();
-                requestBody.put("inputs", prompt);
+                requestBody.put("model", model);
 
-                Map<String, Object> parameters = new HashMap<>();
-                parameters.put("max_new_tokens", 1024);
-                parameters.put("temperature", 0.3);
-                parameters.put("top_p", 0.95);
-                requestBody.put("parameters", parameters);
+                // Create messages for chat completion API (OpenAI compatible format)
+                List<Map<String, String>> messages = new ArrayList<>();
+                Map<String, String> message = new HashMap<>();
+                message.put("role", "user");
+                message.put("content", prompt);
+                messages.add(message);
+
+                requestBody.put("messages", messages);
+                requestBody.put("max_tokens", 1024);
+                requestBody.put("temperature", 0.3);
+                requestBody.put("top_p", 0.95);
 
                 HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestBody, headers);
 
                 String response = restTemplate.postForObject(
-                    apiUrl + "/models/" + model,
+                    apiUrl + "/chat/completions",
                     entity,
                     String.class
                 );
@@ -86,6 +95,21 @@ public class HuggingFaceClient {
         try {
             JsonObject json = JsonParser.parseString(rawResponse).getAsJsonObject();
 
+            // Handle OpenAI chat completion format
+            if (json.has("choices")) {
+                JsonArray choices = json.getAsJsonArray("choices");
+                if (choices.size() > 0) {
+                    JsonObject choice = choices.get(0).getAsJsonObject();
+                    if (choice.has("message")) {
+                        JsonObject messageObj = choice.getAsJsonObject("message");
+                        if (messageObj.has("content")) {
+                            return messageObj.get("content").getAsString();
+                        }
+                    }
+                }
+            }
+
+            // Fallback
             if (json.has("generated_text")) {
                 return json.get("generated_text").getAsString();
             } else if (json.has("output")) {

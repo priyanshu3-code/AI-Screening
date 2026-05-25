@@ -39,7 +39,7 @@ public class AIOrchestrationService {
             log.info("LLM Call 1 completed in {}ms", System.currentTimeMillis() - startTime);
             return result;
         } catch (Exception e) {
-            log.error("Resume analysis failed", e);
+            log.error("Resume analysis failed, using mock data", e);
             return createMockExtractionResult(jobDescription);
         }
     }
@@ -76,7 +76,7 @@ public class AIOrchestrationService {
             InterviewQuestionsWrapper wrapper = gson.fromJson(jsonContent, InterviewQuestionsWrapper.class);
             return wrapper.questions;
         } catch (Exception e) {
-            log.error("Interview question generation failed", e);
+            log.error("Interview question generation failed, using mock data", e);
             return createMockInterviewQuestions();
         }
     }
@@ -89,7 +89,7 @@ public class AIOrchestrationService {
 
             return gson.fromJson(jsonContent, RejectionGuidance.class);
         } catch (Exception e) {
-            log.error("Rejection guidance generation failed", e);
+            log.error("Rejection guidance generation failed, using mock data", e);
             return createMockRejectionGuidance();
         }
     }
@@ -102,7 +102,7 @@ public class AIOrchestrationService {
 
             return gson.fromJson(jsonContent, RecruiterSummary.class);
         } catch (Exception e) {
-            log.error("Recruiter summary generation failed", e);
+            log.error("Recruiter summary generation failed, using mock data", e);
             return createMockRecruiterSummary();
         }
     }
