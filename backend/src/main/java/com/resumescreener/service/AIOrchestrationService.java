@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.resumescreener.model.*;
-import com.resumescreener.util.ClaudeEvaluator;
+import com.resumescreener.util.LLMResponseEvaluator;
 import com.resumescreener.util.ResumeExtractionResultDeserializer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,9 +56,11 @@ public class AIOrchestrationService {
                     result.setExperienceYears(inferExperienceYears(result));
                 }
 
-                // Evaluate the LLM output quality using Claude
-                ClaudeEvaluator.EvaluationResult evaluation = ClaudeEvaluator.evaluateExtractionOutput(jsonContent, resumeText, jobDescription);
-                log.info("LLM Call 1 Claude Evaluation: {}", evaluation);
+                // Evaluate the LLM output quality
+                long duration = System.currentTimeMillis() - startTime;
+                LLMResponseEvaluator.EvaluationResult evaluation = LLMResponseEvaluator.evaluateExtractionOutput(
+                    jsonContent, resumeText, jobDescription, MODEL_EXTRACTION, duration);
+
                 if (evaluation.strengths != null) {
                     log.debug("  Strengths: {}", evaluation.strengths);
                 }
@@ -69,9 +71,8 @@ public class AIOrchestrationService {
                     log.warn("  Issues Found: {}", evaluation.issues);
                 }
 
-                long duration = System.currentTimeMillis() - startTime;
-                log.info("LLM Call 1 completed in {}ms | Match Score: {} | Claude Score: {}/100 | Quality: {} | Model: Mistral | SOURCE: LLM",
-                    duration, result.getMatchScore(), evaluation.score, evaluation.quality);
+                log.info("LLM Call 1 completed in {}ms | Match Score: {} | Quality Score: {}/100 | Quality: {} | Model: Mistral | Accuracy: {} | Relevance: {} | SOURCE: LLM",
+                    duration, result.getMatchScore(), evaluation.score, evaluation.quality, evaluation.accuracy, evaluation.relevance);
                 return result;
 
             } catch (com.google.gson.JsonSyntaxException jsonError) {
@@ -132,9 +133,11 @@ public class AIOrchestrationService {
                 InterviewQuestionsWrapper wrapper = gson.fromJson(jsonContent, InterviewQuestionsWrapper.class);
                 log.info("✓ Successfully parsed {} interview questions from LLM", (wrapper.questions != null ? wrapper.questions.size() : 0));
 
-                // Evaluate the LLM output quality using Claude
-                ClaudeEvaluator.EvaluationResult evaluation = ClaudeEvaluator.evaluateInterviewQuestions(jsonContent, jobDescription);
-                log.info("LLM Call 2A Claude Evaluation: {}", evaluation);
+                // Evaluate the LLM output quality
+                long duration = System.currentTimeMillis() - startTime;
+                LLMResponseEvaluator.EvaluationResult evaluation = LLMResponseEvaluator.evaluateInterviewQuestions(
+                    jsonContent, jobDescription, MODEL_INTERVIEW, duration);
+
                 if (evaluation.strengths != null) {
                     log.debug("  Strengths: {}", evaluation.strengths);
                 }
@@ -145,9 +148,8 @@ public class AIOrchestrationService {
                     log.warn("  Issues Found: {}", evaluation.issues);
                 }
 
-                long duration = System.currentTimeMillis() - startTime;
-                log.info("LLM Call 2A completed in {}ms | Questions: {} | Claude Score: {}/100 | Quality: {} | Model: Mistral | SOURCE: LLM",
-                    duration, (wrapper.questions != null ? wrapper.questions.size() : 0), evaluation.score, evaluation.quality);
+                log.info("LLM Call 2A completed in {}ms | Questions: {} | Quality Score: {}/100 | Quality: {} | Model: Mistral | Relevance: {} | Coherence: {} | SOURCE: LLM",
+                    duration, (wrapper.questions != null ? wrapper.questions.size() : 0), evaluation.score, evaluation.quality, evaluation.relevance, evaluation.coherence);
 
                 return wrapper.questions;
             } catch (com.google.gson.JsonSyntaxException jsonError) {
@@ -177,9 +179,11 @@ public class AIOrchestrationService {
                 RejectionGuidance guidance = gson.fromJson(jsonContent, RejectionGuidance.class);
                 log.info("✓ Successfully parsed rejection guidance from LLM");
 
-                // Evaluate the LLM output quality using Claude
-                ClaudeEvaluator.EvaluationResult evaluation = ClaudeEvaluator.evaluateRejectionGuidance(jsonContent);
-                log.info("LLM Call 2B Claude Evaluation: {}", evaluation);
+                // Evaluate the LLM output quality
+                long duration = System.currentTimeMillis() - startTime;
+                LLMResponseEvaluator.EvaluationResult evaluation = LLMResponseEvaluator.evaluateRejectionGuidance(
+                    jsonContent, MODEL_INTERVIEW, duration);
+
                 if (evaluation.strengths != null) {
                     log.debug("  Strengths: {}", evaluation.strengths);
                 }
@@ -190,9 +194,8 @@ public class AIOrchestrationService {
                     log.warn("  Issues Found: {}", evaluation.issues);
                 }
 
-                long duration = System.currentTimeMillis() - startTime;
-                log.info("LLM Call 2B completed in {}ms | Claude Score: {}/100 | Quality: {} | Model: Mistral | SOURCE: LLM",
-                    duration, evaluation.score, evaluation.quality);
+                log.info("LLM Call 2B completed in {}ms | Quality Score: {}/100 | Quality: {} | Model: Mistral | Factuality: {} | Completeness: {} | SOURCE: LLM",
+                    duration, evaluation.score, evaluation.quality, evaluation.factuality, evaluation.completeness);
 
                 return guidance;
             } catch (com.google.gson.JsonSyntaxException jsonError) {
@@ -222,9 +225,11 @@ public class AIOrchestrationService {
                 RecruiterSummary summary = gson.fromJson(jsonContent, RecruiterSummary.class);
                 log.info("✓ Successfully parsed recruiter summary from LLM");
 
-                // Evaluate the LLM output quality using Claude
-                ClaudeEvaluator.EvaluationResult evaluation = ClaudeEvaluator.evaluateRecruiterSummary(jsonContent);
-                log.info("LLM Call 3 Claude Evaluation: {}", evaluation);
+                // Evaluate the LLM output quality
+                long duration = System.currentTimeMillis() - startTime;
+                LLMResponseEvaluator.EvaluationResult evaluation = LLMResponseEvaluator.evaluateRecruiterSummary(
+                    jsonContent, MODEL_SUMMARY, duration);
+
                 if (evaluation.strengths != null) {
                     log.debug("  Strengths: {}", evaluation.strengths);
                 }
@@ -235,9 +240,8 @@ public class AIOrchestrationService {
                     log.warn("  Issues Found: {}", evaluation.issues);
                 }
 
-                long duration = System.currentTimeMillis() - startTime;
-                log.info("LLM Call 3 completed in {}ms | Claude Score: {}/100 | Quality: {} | Model: Meta Llama | SOURCE: LLM",
-                    duration, evaluation.score, evaluation.quality);
+                log.info("LLM Call 3 completed in {}ms | Quality Score: {}/100 | Quality: {} | Model: Meta Llama | Accuracy: {} | Coherence: {} | SOURCE: LLM",
+                    duration, evaluation.score, evaluation.quality, evaluation.accuracy, evaluation.coherence);
 
                 return summary;
             } catch (com.google.gson.JsonSyntaxException jsonError) {
