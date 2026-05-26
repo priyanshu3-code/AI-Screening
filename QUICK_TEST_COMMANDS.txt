@@ -1,0 +1,183 @@
+════════════════════════════════════════════════════════════════════════
+                   QUICK TEST COMMANDS - AI Resume Screener
+════════════════════════════════════════════════════════════════════════
+
+📁 TEST FILES CREATED:
+├── HuggingFaceClientTest.java        (5 tests)
+├── SessionManagerTest.java           (7 tests)
+├── AIOrchestrationServiceTest.java   (4 tests)
+├── AnalysisControllerTest.java       (4 tests)
+└── ResumeControllerTest.java         (5 tests)
+
+TOTAL: 25 JUnit Tests
+
+════════════════════════════════════════════════════════════════════════
+
+🚀 RUN ALL TESTS
+────────────────────────────────────────────────────────────────────────
+cd C:\Users\varshita.yerva\Desktop\FDE\project-3\backend
+mvn clean test
+
+📊 EXPECTED OUTPUT:
+[INFO] Tests run: 25, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+════════════════════════════════════════════════════════════════════════
+
+🔍 RUN SPECIFIC TEST CLASS
+────────────────────────────────────────────────────────────────────────
+HuggingFace Client Tests:
+  mvn -Dtest=HuggingFaceClientTest test
+
+Session Manager Tests:
+  mvn -Dtest=SessionManagerTest test
+
+AI Orchestration Tests:
+  mvn -Dtest=AIOrchestrationServiceTest test
+
+Analysis Controller Tests:
+  mvn -Dtest=AnalysisControllerTest test
+
+Resume Controller Tests:
+  mvn -Dtest=ResumeControllerTest test
+
+════════════════════════════════════════════════════════════════════════
+
+📈 RUN WITH COVERAGE REPORT
+────────────────────────────────────────────────────────────────────────
+mvn clean test jacoco:report
+
+📂 VIEW REPORT:
+Open: C:\Users\varshita.yerva\Desktop\FDE\project-3\backend\target\site\jacoco\index.html
+
+Expected Coverage: 90%+
+
+════════════════════════════════════════════════════════════════════════
+
+🧪 RUN IN IDE (IntelliJ)
+────────────────────────────────────────────────────────────────────────
+1. Right-click "backend" folder
+2. Select "Run" → "All Tests"
+3. Or press: Ctrl+Shift+F10
+4. Watch test results in UI
+
+════════════════════════════════════════════════════════════════════════
+
+📋 TEST BREAKDOWN
+────────────────────────────────────────────────────────────────────────
+HuggingFaceClient (5 tests):
+  ✓ API call success
+  ✓ API call failure with retry
+  ✓ Parse OpenAI response format
+  ✓ Parse alternative response format
+  ✓ Handle invalid JSON
+
+SessionManager (7 tests):
+  ✓ Create session with UUID
+  ✓ Get session by ID
+  ✓ Error handling (not found)
+  ✓ Update session
+  ✓ Delete session
+  ✓ Count active sessions
+  ✓ Check expiry (24h)
+
+AIOrchestrationService (4 tests):
+  ✓ Resume extraction success
+  ✓ Resume extraction failure
+  ✓ High score → Interview questions (LLM 2A)
+  ✓ Low score → Rejection guidance (LLM 2B)
+  ✓ Always generate summary (LLM 3)
+
+AnalysisController (4 tests):
+  ✓ POST /analysis/screen success
+  ✓ Handle missing session
+  ✓ GET /analysis/{id}/results success
+  ✓ Handle missing session
+
+ResumeController (5 tests):
+  ✓ POST /resume/upload success
+  ✓ Reject empty files
+  ✓ Reject files > 10MB
+  ✓ GET /resume/{id}/preview success
+  ✓ Handle missing session
+
+════════════════════════════════════════════════════════════════════════
+
+💡 QUICK TEST SCENARIOS
+────────────────────────────────────────────────────────────────────────
+Test: File Upload
+  Command: mvn -Dtest=ResumeControllerTest test
+  Validates: Size limits, empty file handling, session creation
+
+Test: Resume Analysis
+  Command: mvn -Dtest=AIOrchestrationServiceTest test
+  Validates: 3 LLM calls, conditional logic, fallback
+
+Test: API Communication
+  Command: mvn -Dtest=HuggingFaceClientTest test
+  Validates: API calls, response parsing, error handling
+
+Test: Session Management
+  Command: mvn -Dtest=SessionManagerTest test
+  Validates: CRUD operations, expiry, concurrency
+
+════════════════════════════════════════════════════════════════════════
+
+🎯 FULL WORKFLOW
+────────────────────────────────────────────────────────────────────────
+Step 1: Clean Build
+  mvn clean
+
+Step 2: Install Dependencies
+  mvn install -DskipTests
+
+Step 3: Run All Tests
+  mvn test
+
+Step 4: Generate Coverage
+  mvn jacoco:report
+
+Step 5: View Results
+  Open: backend/target/site/jacoco/index.html
+
+════════════════════════════════════════════════════════════════════════
+
+✅ SUCCESS CRITERIA
+────────────────────────────────────────────────────────────────────────
+✓ All 25 tests pass
+✓ 0 Failures
+✓ 0 Errors
+✓ Coverage >= 90%
+✓ BUILD SUCCESS message
+
+════════════════════════════════════════════════════════════════════════
+
+🐛 TROUBLESHOOTING
+────────────────────────────────────────────────────────────────────────
+Issue: "mvn not found"
+Solution: Ensure Maven is in PATH
+  Check: mvn -version
+
+Issue: Tests timeout
+Solution: Increase timeout
+  mvn test -DtimeoutSeconds=300
+
+Issue: Mockito issues
+Solution: Clear and rebuild
+  mvn clean install -DskipTests
+
+════════════════════════════════════════════════════════════════════════
+
+📚 DETAILED GUIDES
+────────────────────────────────────────────────────────────────────────
+For more details, see:
+  → TESTING_GUIDE.md (comprehensive)
+  → TEST_SUMMARY.md (detailed breakdown)
+
+════════════════════════════════════════════════════════════════════════
+
+🚀 READY TO TEST!
+
+Run: cd C:\Users\varshita.yerva\Desktop\FDE\project-3\backend && mvn clean test
+
+════════════════════════════════════════════════════════════════════════

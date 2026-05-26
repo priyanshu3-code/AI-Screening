@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git commit -m 'Fix: Update to HuggingFace Router API with OpenAI-compatible format *)",
+      "Bash(git push *)",
+      "Bash(git tag -a v1.0.1 -m 'Release 1.0.1: HuggingFace Router Integration *)",
+      "Bash(mvn clean *)",
+      "Bash(git commit *)"
+    ]
+  }
+}
