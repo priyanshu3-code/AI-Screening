@@ -1,6 +1,6 @@
 package com.resumescreener.model;
 
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,7 +18,7 @@ public class InterviewQuestion {
 
     private String difficulty;
 
-    @SerializedName("time_estimate_minutes")
+    @JsonProperty("time_estimate_minutes")
     private int timeEstimateMinutes;
 
     private String tip;

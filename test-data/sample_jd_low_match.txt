@@ -1,0 +1,96 @@
+JOB DESCRIPTION
+
+POSITION: Senior Full-Stack Software Engineer
+COMPANY: TechCorp Solutions
+LOCATION: San Francisco, CA (Hybrid)
+EMPLOYMENT TYPE: Full-Time
+SALARY RANGE: $150,000 - $200,000 + Benefits
+
+ABOUT US
+TechCorp Solutions is an enterprise SaaS company serving Fortune 500 clients in financial technology. We build high-performance, distributed systems that process millions of transactions daily. Our team is composed of experienced engineers with deep expertise in cloud architecture and scalable systems.
+
+ROLE OVERVIEW
+We are looking for a Senior Full-Stack Software Engineer to lead our platform engineering team. You will architect complex microservices, mentor junior engineers, and make critical decisions on technology stack and system design. This is a leadership role requiring extensive experience with enterprise-scale systems.
+
+KEY RESPONSIBILITIES
+• Design and architect microservices using Spring Boot 3.x and Spring Cloud
+• Lead technical design discussions and architectural decisions
+• Mentor junior engineers on best practices and design patterns
+• Implement RESTful APIs with comprehensive documentation
+• Optimize database performance for large-scale operations
+• Build responsive UIs using Angular 18 and modern frontend frameworks
+• Manage Docker containers and Kubernetes deployments in production
+• Implement security best practices and authentication mechanisms
+• Lead code reviews and enforce quality standards
+• Collaborate with senior management on strategic initiatives
+
+REQUIRED QUALIFICATIONS
+• 10+ years of software development experience with 7+ years in backend development
+• 5+ years of hands-on experience with Spring Boot and Spring Cloud
+• Expert-level proficiency in Java 21 and modern Java frameworks
+• Proven track record building and scaling microservices in production
+• 5+ years of experience with PostgreSQL or equivalent relational databases
+• 3+ years of hands-on experience with Kubernetes in production
+• 5+ years of experience with Angular or equivalent modern frontend frameworks
+• Deep expertise in cloud architecture (AWS preferred)
+• 5+ years of experience designing RESTful APIs at enterprise scale
+• Strong background in system design and architectural patterns
+• Leadership experience: must have mentored 5+ engineers
+• Bachelor's degree in Computer Science or equivalent professional experience
+
+PREFERRED QUALIFICATIONS
+• Experience with advanced caching patterns and Redis
+• Knowledge of API gateway patterns and rate limiting
+• Experience with advanced monitoring, logging, and observability
+• Open-source contributions or significant GitHub activity
+• AWS Solutions Architect certification
+• Previous experience in financial services or regulated industries
+• Patent filings or published research in computer science
+• Experience with advanced database optimization techniques
+
+TECHNICAL SKILLS (MUST HAVE)
+• Languages: Java (essential), Python, Go, or Rust
+• Backend: Spring Boot 3.x, Spring Cloud, Microservices, Enterprise Systems
+• Frontend: Angular 18, TypeScript, RxJS, Advanced CSS
+• Databases: PostgreSQL, Redis, NoSQL (MongoDB, Cassandra)
+• DevOps: Kubernetes (5+ years), Docker, Advanced CI/CD
+• Cloud: AWS (5+ years), VPC, RDS, S3, CloudFormation
+• Testing: Advanced testing strategies, TDD, Integration testing
+• Build Tools: Maven, Gradle, Advanced build optimization
+• Version Control: Git, GitHub Enterprise
+
+WHAT YOU'LL BRING
+• Strategic thinking and architectural vision
+• Ability to mentor and develop junior engineers
+• Leadership in cross-functional teams
+• Experience with high-stakes production systems
+• Track record of delivering enterprise solutions
+• Thought leadership and innovation mindset
+• Strong communication with C-level executives
+
+WHAT WE OFFER
+• Competitive salary: $150,000 - $200,000
+• Comprehensive benefits (medical, dental, vision)
+• 401(k) with company matching (5%)
+• Stock options (significant for leadership role)
+• Unlimited PTO and flexible work arrangements
+• Professional development budget ($3,000+/year)
+• Team lead budget for engineering investments
+• Executive coaching opportunities
+• Quarterly team offsites and conferences
+
+HIRING PROCESS
+1. Executive screening (60 minutes)
+2. Technical deep-dive with CTO (90 minutes)
+3. System design interview (90 minutes)
+4. Architectural decision scenarios (60 minutes)
+5. Team lead interview with VP Engineering (60 minutes)
+6. Executive interview with CFO (30 minutes)
+7. Offer and negotiations
+
+EQUAL OPPORTUNITY
+TechCorp Solutions is an equal opportunity employer committed to building a diverse and inclusive workplace.
+
+KEYWORDS: Senior Java, Spring Boot, Kubernetes, Microservices, System Architecture, Enterprise, FinTech, Leadership, Cloud Architecture, AWS
+
+APPLICATION DEADLINE: Immediate need - Apply within 48 hours for consideration

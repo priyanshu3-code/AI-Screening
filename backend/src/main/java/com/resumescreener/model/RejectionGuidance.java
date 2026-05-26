@@ -1,6 +1,6 @@
 package com.resumescreener.model;
 
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,12 +11,12 @@ import java.util.List;
 @AllArgsConstructor
 public class RejectionGuidance {
 
-    @SerializedName("rejection_reasons")
+    @JsonProperty("rejection_reasons")
     private List<String> rejectionReasons;
 
     private List<Improvement> improvements;
 
-    @SerializedName("alternative_roles")
+    @JsonProperty("alternative_roles")
     private List<String> alternativeRoles;
 
     private String encouragement;
@@ -28,13 +28,13 @@ public class RejectionGuidance {
 
         private String skill;
 
-        @SerializedName("current_level")
+        @JsonProperty("current_level")
         private String currentLevel;
 
-        @SerializedName("recommended_resources")
+        @JsonProperty("recommended_resources")
         private List<String> recommendedResources;
 
-        @SerializedName("estimated_months")
+        @JsonProperty("estimated_months")
         private int estimatedMonths;
     }
 }

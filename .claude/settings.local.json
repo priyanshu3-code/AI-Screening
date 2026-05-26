@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(grep -v \"^\\\\.$\")",
-      "Bash(awk '{print $9, \"\\(\"$5\"\\)\"}')"
+      "Bash(awk '{print $9, \"\\(\"$5\"\\)\"}')",
+      "Bash(mvn clean *)"
     ]
   }
 }

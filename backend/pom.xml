@@ -26,6 +26,17 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>maven-central</id>
+            <url>https://repo.maven.apache.org/maven2</url>
+        </repository>
+        <repository>
+            <id>anthropic-java-sdk</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <!-- Spring Boot Web -->
         <dependency>
@@ -68,6 +79,7 @@
             <version>7.2.5</version>
             <type>pom</type>
         </dependency>
+
 
         <!-- Logging -->
         <dependency>

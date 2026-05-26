@@ -1,0 +1,65 @@
+ALEX JOHNSON
+San Francisco, CA | alex.johnson@email.com | linkedin.com/in/alexjohnson | github.com/alexjohnson
+
+PROFESSIONAL SUMMARY
+Senior Full-Stack Software Engineer with 8 years of experience building scalable microservices and cloud-native applications. Expert in Java, Spring Boot, and modern DevOps practices. Proven track record of designing and deploying distributed systems handling millions of daily transactions. Passionate about clean code, performance optimization, and mentoring junior engineers.
+
+TECHNICAL SKILLS
+Languages: Java 21, Python, TypeScript, SQL, Bash
+Backend Frameworks: Spring Boot 3.x, Spring Cloud, Spring Data JPA, Spring Security
+Frontend: Angular 18, React, RxJS, Bootstrap, HTML5/CSS3
+Databases: PostgreSQL, MySQL, MongoDB, Redis
+DevOps & Cloud: Docker, Kubernetes, AWS (EC2, S3, RDS, Lambda), Git, Jenkins, GitHub Actions
+API Design: REST APIs, OpenAPI/Swagger, API versioning, HTTP/2
+Testing: JUnit 5, Mockito, TestNG, Cypress, Karma, Jest
+Other: Maven 3.9+, Gradle, Microservices Architecture, Design Patterns, SOLID Principles
+
+PROFESSIONAL EXPERIENCE
+
+Senior Backend Engineer | TechCorp Solutions, San Francisco, CA | Jan 2022 - Present
+• Architected and deployed 12+ microservices using Spring Boot 3.3 handling 50M+ daily API requests
+• Designed RESTful APIs with OpenAPI documentation serving 15+ client applications
+• Implemented rate limiting, caching strategies, and database optimization improving response times by 40%
+• Led integration with third-party services including payment gateways and analytics platforms
+• Mentored 5 junior engineers on Spring Boot best practices and microservices design patterns
+• Reduced deployment time from 45 minutes to 10 minutes by implementing CI/CD pipeline with GitHub Actions
+
+Full-Stack Developer | InnovateTech, San Francisco, CA | Jun 2019 - Dec 2021
+• Built and maintained 8+ full-stack applications using Angular 18 frontend with Spring Boot backend
+• Designed database schemas (PostgreSQL) handling 10M+ records with complex queries and indexing
+• Implemented JWT-based authentication and authorization with role-based access control
+• Created responsive UI components using Bootstrap 5 and Angular Material
+• Established testing culture: achieved 85% code coverage with JUnit 5 and Mockito
+• Deployed applications to AWS using Docker containers and managed Kubernetes clusters
+
+Junior Developer | StartupHub, San Francisco, CA | Jul 2017 - May 2019
+• Developed RESTful APIs using Spring Boot 2.x for e-commerce platform
+• Built frontend features using Angular 16 and RxJS for real-time data updates
+• Wrote unit tests and integration tests achieving 75% code coverage
+• Participated in code reviews and refactoring efforts to improve code quality
+• Deployed Docker containers to production environments
+
+EDUCATION
+Bachelor of Science in Computer Science | University of California, Berkeley | 2017
+Relevant Coursework: Data Structures, Algorithms, Database Systems, Software Engineering, Distributed Systems
+
+CERTIFICATIONS & CONTINUOUS LEARNING
+• AWS Solutions Architect Associate (2023)
+• Spring Professional Certification (2022)
+• Docker Certified Associate (2021)
+• Completed courses: Kubernetes for Developers, Advanced Java Concurrency, Full-Stack Web Development
+
+PROJECTS & ACHIEVEMENTS
+• Designed and implemented rate-limiting service: Reduced API abuse by 99%, processed 500K+ requests/day
+• Led migration from monolith to microservices: 40% improvement in deployment frequency, enabled independent team scaling
+• Open-source contributions: 150+ GitHub stars for distributed cache utility library written in Java
+• Performance optimization initiative: Reduced database query time by 65% through indexing and query optimization
+
+LANGUAGES
+English (Native), Spanish (Conversational)
+
+ADDITIONAL INFORMATION
+• Active in tech community: Speaker at 3 major conferences on microservices architecture
+• Regular contributor to open-source projects on GitHub
+• Strong focus on test-driven development and code quality
+• Experience mentoring and code review

@@ -30,6 +30,7 @@ public class HuggingFaceClient {
 
     public HuggingFaceClient(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
+        log.info("HuggingFaceClient initialized with API key: {}", apiKey == null || apiKey.equals("your_api_key_here") ? "NOT SET (using placeholder)" : "SET (hidden)");
     }
 
     public String callLLM(String prompt, String model) {

@@ -1,6 +1,6 @@
 package com.resumescreener.model;
 
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 public class RecruiterSummary {
 
-    @SerializedName("executive_summary")
+    @JsonProperty("executive_summary")
     private String executiveSummary;
 
     private List<String> strengths;
@@ -20,9 +20,9 @@ public class RecruiterSummary {
 
     private String recommendation;
 
-    @SerializedName("next_steps")
+    @JsonProperty("next_steps")
     private List<String> nextSteps;
 
-    @SerializedName("interview_readiness")
+    @JsonProperty("interview_readiness")
     private String interviewReadiness;
 }

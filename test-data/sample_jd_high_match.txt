@@ -1,0 +1,93 @@
+JOB DESCRIPTION
+
+POSITION: Senior Full-Stack Software Engineer
+COMPANY: TechVision Inc.
+LOCATION: San Francisco, CA (Hybrid)
+EMPLOYMENT TYPE: Full-Time
+SALARY RANGE: $160,000 - $220,000 + Benefits
+
+ABOUT US
+TechVision Inc. is a rapidly growing SaaS company serving enterprise clients in the financial services and healthcare sectors. We're building next-generation cloud-native applications that process millions of transactions daily. Our engineering team is committed to excellence, scalability, and continuous innovation.
+
+ROLE OVERVIEW
+We're seeking a Senior Full-Stack Software Engineer to join our Platform Engineering team. You'll take ownership of critical backend services and contribute to our modern Angular-based frontend. You'll work in a collaborative environment where your technical expertise, architectural thinking, and mentorship of junior engineers directly impact our product's success.
+
+KEY RESPONSIBILITIES
+• Design and develop microservices using Spring Boot 3.x handling high-volume API traffic
+• Architect RESTful APIs with clear documentation (OpenAPI/Swagger)
+• Implement robust authentication, authorization, and rate-limiting mechanisms
+• Optimize database performance (PostgreSQL/MySQL) for large-scale data operations
+• Build responsive, user-friendly interfaces using Angular 18 and modern frontend frameworks
+• Implement comprehensive testing strategies (JUnit 5, Mockito) with >80% code coverage
+• Deploy applications using Docker containers and Kubernetes orchestration
+• Mentor junior engineers and conduct thorough code reviews
+• Participate in on-call rotation for production support
+• Collaborate with product, design, and DevOps teams to deliver high-quality solutions
+
+REQUIRED QUALIFICATIONS
+• 7+ years of software development experience with 4+ years in backend development
+• Expert-level proficiency in Java 21, Spring Boot 3.x, and Spring Data JPA
+• Strong experience building and consuming RESTful APIs at scale
+• Proven expertise with PostgreSQL or similar relational databases
+• Experience with containerization (Docker) and orchestration (Kubernetes)
+• Proficiency in Angular 18 (or equivalent modern frontend framework)
+• Solid understanding of microservices architecture and design patterns
+• Experience with CI/CD pipelines (GitHub Actions, Jenkins, or similar)
+• Strong testing practices: JUnit 5, Mockito, integration testing
+• Bachelor's degree in Computer Science or equivalent professional experience
+
+PREFERRED QUALIFICATIONS
+• Experience with AWS services (EC2, S3, RDS, Lambda)
+• Familiarity with Redis or other caching solutions
+• Knowledge of rate limiting and API gateway patterns
+• Experience with monitoring, logging, and observability tools
+• Open-source contributions or GitHub activity
+• AWS or Spring certifications
+• Experience mentoring junior engineers
+• Familiarity with Agile/Scrum methodologies
+
+TECHNICAL SKILLS (MUST HAVE)
+• Languages: Java (essential), Python or similar scripting language
+• Backend: Spring Boot 3.x, Spring Cloud, Microservices
+• Frontend: Angular 18, TypeScript, RxJS, Bootstrap
+• Databases: PostgreSQL/MySQL, understanding of NoSQL
+• DevOps: Docker, Kubernetes, CI/CD pipelines
+• Testing: JUnit 5, Mockito, unit and integration testing
+• Build Tools: Maven, Gradle
+• Version Control: Git, GitHub
+
+WHAT YOU'LL BRING
+• Strong problem-solving and architectural thinking skills
+• Ability to communicate complex technical concepts clearly
+• Passion for code quality and continuous improvement
+• Collaborative mindset with experience working in cross-functional teams
+• Proactive approach to learning and staying current with technology trends
+• Self-motivation and ability to work independently or in a team setting
+
+WHAT WE OFFER
+• Competitive salary and comprehensive benefits package
+• Health insurance (medical, dental, vision)
+• 401(k) with company matching
+• Unlimited PTO and flexible work arrangements
+• Professional development budget ($2,500/year)
+• Stock options
+• Mentorship from experienced engineers
+• Opportunity to work on impactful, large-scale systems
+• Collaborative and inclusive work environment
+
+HIRING PROCESS
+1. Phone screening (30 minutes)
+2. Technical assessment or take-home coding challenge
+3. System design interview
+4. Technical interview with team members
+5. Behavioral round with engineering manager
+6. Offer and negotiations
+
+EQUAL OPPORTUNITY
+TechVision Inc. is an equal opportunity employer. We celebrate diversity and are committed to creating an inclusive environment for all employees.
+
+HOW TO APPLY
+Submit your resume, cover letter, and GitHub profile (if available) to careers@techvision.com
+Application Deadline: Open until filled
+
+KEYWORDS: Java, Spring Boot, Angular, Microservices, REST API, PostgreSQL, Docker, Kubernetes, Full-Stack Development, Software Architecture, CI/CD

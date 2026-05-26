@@ -1,0 +1,44 @@
+JOHN SMITH
+New York, NY | john.smith@email.com | linkedin.com/in/johnsmith | github.com/johnsmith
+
+PROFESSIONAL SUMMARY
+Junior Frontend Developer with 2 years of experience in web development. Primarily focused on HTML, CSS, and basic JavaScript. Looking to expand skills in modern frameworks.
+
+TECHNICAL SKILLS
+Languages: JavaScript, HTML, CSS
+Frontend: jQuery, Bootstrap
+Databases: MySQL
+Other: Git, WordPress
+
+PROFESSIONAL EXPERIENCE
+
+Junior Web Developer | StartupWeb Design, New York, NY | Jan 2023 - Present
+• Built static HTML/CSS websites for small businesses
+• Updated WordPress themes and plugins
+• Fixed basic JavaScript bugs in existing projects
+• Helped with responsive design using Bootstrap
+
+Intern | DesignHub, New York, NY | Jun 2022 - Dec 2022
+• Created HTML mockups from design files
+• Assisted with CSS styling and layout fixes
+• Learned basics of Git version control
+
+EDUCATION
+High School Diploma | Lincoln High School | 2020
+
+CERTIFICATIONS & TRAINING
+• Completed online HTML/CSS course (Codecademy, 2022)
+• WordPress Basics certification (LinkedIn Learning, 2023)
+
+PROJECTS & ACHIEVEMENTS
+• Built 5 static websites for local businesses
+• Maintained WordPress site for a restaurant chain
+• Helped debug CSS alignment issues on team projects
+
+LANGUAGES
+English (Native)
+
+ADDITIONAL INFORMATION
+• Interested in learning React in the future
+• Active on social media sharing web design tips
+• Enjoys freelance web design projects

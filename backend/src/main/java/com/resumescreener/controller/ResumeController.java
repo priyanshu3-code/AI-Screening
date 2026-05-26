@@ -3,6 +3,7 @@ package com.resumescreener.controller;
 import com.resumescreener.dto.ErrorResponse;
 import com.resumescreener.model.Session;
 import com.resumescreener.service.SessionManager;
+import com.resumescreener.util.SensitiveDataMasker;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -63,13 +64,16 @@ public class ResumeController {
         try {
             Session session = sessionManager.getSession(sessionId);
 
-            Map<String, String> preview = new HashMap<>();
-            preview.put("sessionId", session.getId());
-            preview.put("fileName", session.getResumeFileName());
-            preview.put("resumeTextPreview", session.getResumeText().substring(0, Math.min(500, session.getResumeText().length())) + "...");
-            preview.put("jobDescription", session.getJobDescription());
+            String maskedResumeText = SensitiveDataMasker.maskSensitiveData(session.getResumeText());
+            String preview = maskedResumeText.substring(0, Math.min(500, maskedResumeText.length())) + "...";
 
-            return ResponseEntity.ok(preview);
+            Map<String, String> response = new HashMap<>();
+            response.put("sessionId", session.getId());
+            response.put("fileName", SensitiveDataMasker.maskResumeName(session.getResumeFileName()));
+            response.put("resumeTextPreview", preview);
+            response.put("jobDescription", session.getJobDescription());
+
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
             return ResponseEntity.status(404).body(new ErrorResponse(e.getMessage(), 404));
         }
