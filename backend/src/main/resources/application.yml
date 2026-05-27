@@ -1,28 +1,140 @@
 spring:
   application:
     name: resume-screener-api
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+  main:
+    allow-circular-references: true
   servlet:
     multipart:
-      max-file-size: 10MB
-      max-request-size: 10MB
+      max-file-size: ${file.max-size-mb:10}MB
+      max-request-size: ${file.max-size-mb:10}MB
 
 server:
-  port: 8080
+  port: ${SERVER_PORT:8080}
   servlet:
-    context-path: /
+    context-path: ${SERVER_SERVLET_CONTEXT_PATH:/}
 
+# ============================================
+# API Configuration
+# ============================================
+api:
+  base-url: ${API_BASE_URL:http://localhost:8080}
+  timeout-seconds: ${API_TIMEOUT_SECONDS:30}
+
+# ============================================
+# HuggingFace Configuration
+# ============================================
 huggingface:
   api:
-    url: https://router.huggingface.co/v1
-    key: ${HUGGINGFACE_API_KEY:your-api-key-here}
+    url: ${HUGGINGFACE_API_URL:https://router.huggingface.co/v1}
+    key: ${HUGGINGFACE_API_KEY:#{null}}
 
+  # ============================================
+  # Local Hugging Face Model Inference Config
+  # ============================================
+  local-inference:
+    enabled: ${HUGGINGFACE_LOCAL_INFERENCE_ENABLED:true}
+    model-cache-size: ${HUGGINGFACE_MODEL_CACHE_SIZE:5}
+
+    # Resume summarization using abstractive models
+    summarization:
+      enabled: ${HUGGINGFACE_SUMMARIZATION_ENABLED:true}
+      model: ${HUGGINGFACE_SUMMARIZATION_MODEL:facebook/bart-large-cnn}
+      max-length: ${HUGGINGFACE_SUMMARY_MAX_LENGTH:200}
+      min-length: ${HUGGINGFACE_SUMMARY_MIN_LENGTH:50}
+
+    # Skill extraction using token classification
+    skill-extraction:
+      enabled: ${HUGGINGFACE_SKILL_EXTRACTION_ENABLED:true}
+      model: ${HUGGINGFACE_SKILL_EXTRACTION_MODEL:bert-base-uncased}
+      confidence-threshold: ${HUGGINGFACE_SKILL_CONFIDENCE_THRESHOLD:0.7}
+
+    # Semantic similarity for match scoring
+    match-scoring:
+      enabled: ${HUGGINGFACE_MATCH_SCORING_ENABLED:true}
+      model: ${HUGGINGFACE_MATCH_SCORING_MODEL:sentence-transformers/all-MiniLM-L6-v2}
+      use-semantic-similarity: ${HUGGINGFACE_USE_SEMANTIC_SIMILARITY:true}
+
+    # Optional: Toxicity detection (disabled by default)
+    toxicity-detection:
+      enabled: ${HUGGINGFACE_TOXICITY_DETECTION_ENABLED:false}
+      model: ${HUGGINGFACE_TOXICITY_MODEL:distilbert-base-uncased-finetuned-sst-2-english}
+      severity-threshold: ${HUGGINGFACE_TOXICITY_THRESHOLD:0.8}
+
+# ============================================
+# LLM Configuration
+# ============================================
+llm:
+  extraction:
+    model: ${LLM_EXTRACTION_MODEL:meta-llama/Llama-3.1-70B-Instruct}
+    timeout-ms: ${LLM_EXTRACTION_TIMEOUT_MS:30000}
+    max-tokens: ${LLM_EXTRACTION_MAX_TOKENS:1024}
+    temperature: ${LLM_EXTRACTION_TEMPERATURE:0.3}
+
+  interview:
+    model: ${LLM_INTERVIEW_MODEL:meta-llama/Llama-3.1-70B-Instruct}
+    timeout-ms: ${LLM_INTERVIEW_TIMEOUT_MS:45000}
+    max-tokens: ${LLM_INTERVIEW_MAX_TOKENS:2048}
+    temperature: ${LLM_INTERVIEW_TEMPERATURE:0.5}
+
+  summary:
+    model: ${LLM_SUMMARY_MODEL:meta-llama/Llama-3.1-70B-Instruct}
+    timeout-ms: ${LLM_SUMMARY_TIMEOUT_MS:15000}
+    max-tokens: ${LLM_SUMMARY_MAX_TOKENS:512}
+    temperature: ${LLM_SUMMARY_TEMPERATURE:0.3}
+
+  retry:
+    max-attempts: ${LLM_RETRY_MAX_ATTEMPTS:3}
+    initial-backoff-ms: ${LLM_RETRY_INITIAL_BACKOFF_MS:1000}
+    backoff-multiplier: ${LLM_RETRY_BACKOFF_MULTIPLIER:2}
+
+# ============================================
+# File Upload Configuration
+# ============================================
+file:
+  max-size-mb: ${FILE_MAX_SIZE_MB:10}
+  allowed-types: ${FILE_ALLOWED_TYPES:pdf,txt,doc,docx}
+  min-resume-chars: ${FILE_MIN_RESUME_CHARS:100}
+
+# ============================================
+# Job Description Configuration
+# ============================================
+job-description:
+  min-chars: ${JOB_DESCRIPTION_MIN_CHARS:50}
+  max-chars: ${JOB_DESCRIPTION_MAX_CHARS:50000}
+
+# ============================================
+# Session Configuration
+# ============================================
+session:
+  timeout-minutes: ${SESSION_TIMEOUT_MINUTES:60}
+  cleanup-interval-minutes: ${SESSION_CLEANUP_INTERVAL_MINUTES:60}
+  max-concurrent: ${SESSION_MAX_CONCURRENT:100}
+
+# ============================================
+# Match Score Configuration
+# ============================================
+scoring:
+  interview-threshold: ${SCORING_INTERVIEW_THRESHOLD:70}
+  weight-skills: ${SCORING_WEIGHT_SKILLS:0.40}
+  weight-experience: ${SCORING_WEIGHT_EXPERIENCE:0.30}
+  weight-tech-stack: ${SCORING_WEIGHT_TECH_STACK:0.20}
+  weight-education: ${SCORING_WEIGHT_EDUCATION:0.10}
+
+# ============================================
+# CORS Configuration
+# ============================================
 cors:
   allowed:
     origins: ${CORS_ALLOWED_ORIGINS:http://localhost:4200}
 
+# ============================================
+# Logging Configuration
+# ============================================
 logging:
   level:
-    root: INFO
-    com.resumescreener: DEBUG
+    root: ${LOGGING_LEVEL_ROOT:INFO}
+    com.resumescreener: ${LOGGING_LEVEL_APP:DEBUG}
   pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss} - %logger{36} - %msg%n"
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"

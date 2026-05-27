@@ -1,0 +1,102 @@
+# ============================================
+# Production Profile Configuration
+# ============================================
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+server:
+  port: ${SERVER_PORT:8080}
+
+api:
+  base-url: ${API_BASE_URL:https://api.resumescreener.com}
+  timeout-seconds: 30
+
+# ============================================
+# HuggingFace Configuration (Prod)
+# All values MUST come from environment variables
+# ============================================
+huggingface:
+  api:
+    url: ${HUGGINGFACE_API_URL:https://router.huggingface.co/v1}
+    key: ${HUGGINGFACE_API_KEY:#{null}}
+
+# ============================================
+# LLM Configuration (Prod)
+# ============================================
+llm:
+  extraction:
+    model: ${LLM_EXTRACTION_MODEL:meta-llama/Llama-3.1-70B-Instruct}
+    timeout-ms: 30000
+    max-tokens: 1024
+    temperature: 0.3
+
+  interview:
+    model: ${LLM_INTERVIEW_MODEL:meta-llama/Llama-3.1-70B-Instruct}
+    timeout-ms: 45000
+    max-tokens: 2048
+    temperature: 0.5
+
+  summary:
+    model: ${LLM_SUMMARY_MODEL:meta-llama/Llama-3.1-70B-Instruct}
+    timeout-ms: 15000
+    max-tokens: 512
+    temperature: 0.3
+
+  retry:
+    max-attempts: 3
+    initial-backoff-ms: 1000
+    backoff-multiplier: 2
+
+# ============================================
+# File Upload Configuration (Prod)
+# ============================================
+file:
+  max-size-mb: 10
+  allowed-types: pdf,txt,doc,docx
+  min-resume-chars: 100
+
+# ============================================
+# Job Description Configuration (Prod)
+# ============================================
+job-description:
+  min-chars: 50
+  max-chars: 50000
+
+# ============================================
+# Session Configuration (Prod)
+# ============================================
+session:
+  timeout-minutes: 120
+  cleanup-interval-minutes: 30
+  max-concurrent: 500
+
+# ============================================
+# Scoring Configuration (Prod)
+# ============================================
+scoring:
+  interview-threshold: 70
+  weight-skills: 0.40
+  weight-experience: 0.30
+  weight-tech-stack: 0.20
+  weight-education: 0.10
+
+# ============================================
+# CORS Configuration (Prod)
+# Must be set via CORS_ALLOWED_ORIGINS env var
+# ============================================
+cors:
+  allowed:
+    origins: ${CORS_ALLOWED_ORIGINS:https://resumescreener.com}
+
+# ============================================
+# Logging Configuration (Prod)
+# JSON structured logging for ELK/Datadog compatibility
+# ============================================
+logging:
+  level:
+    root: WARN
+    com.resumescreener: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd'T'HH:mm:ss.SSS'Z'} [%thread] %-5level %logger{36} - %msg%n"

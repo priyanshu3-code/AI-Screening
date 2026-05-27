@@ -1,0 +1,97 @@
+# ============================================
+# Development Profile Configuration
+# ============================================
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+server:
+  port: 8080
+
+api:
+  base-url: http://localhost:8080
+  timeout-seconds: 30
+
+# ============================================
+# HuggingFace Configuration (Dev)
+# ============================================
+huggingface:
+  api:
+    url: https://router.huggingface.co/v1
+    key: ${HUGGINGFACE_API_KEY:#{null}}
+
+# ============================================
+# LLM Configuration (Dev)
+# ============================================
+llm:
+  extraction:
+    timeout-ms: 30000
+    max-tokens: 1024
+    temperature: 0.3
+
+  interview:
+    timeout-ms: 45000
+    max-tokens: 2048
+    temperature: 0.5
+
+  summary:
+    timeout-ms: 15000
+    max-tokens: 512
+    temperature: 0.3
+
+  retry:
+    max-attempts: 3
+    initial-backoff-ms: 1000
+    backoff-multiplier: 2
+
+# ============================================
+# File Upload Configuration (Dev)
+# ============================================
+file:
+  max-size-mb: 10
+  allowed-types: pdf,txt,doc,docx
+  min-resume-chars: 100
+
+# ============================================
+# Job Description Configuration (Dev)
+# ============================================
+job-description:
+  min-chars: 50
+  max-chars: 50000
+
+# ============================================
+# Session Configuration (Dev)
+# ============================================
+session:
+  timeout-minutes: 60
+  cleanup-interval-minutes: 15
+  max-concurrent: 100
+
+# ============================================
+# Scoring Configuration (Dev)
+# ============================================
+scoring:
+  interview-threshold: 70
+  weight-skills: 0.40
+  weight-experience: 0.30
+  weight-tech-stack: 0.20
+  weight-education: 0.10
+
+# ============================================
+# CORS Configuration (Dev)
+# ============================================
+cors:
+  allowed:
+    origins: http://localhost:4200,http://localhost:3000
+
+# ============================================
+# Logging Configuration (Dev)
+# ============================================
+logging:
+  level:
+    root: INFO
+    com.resumescreener: DEBUG
+    org.springframework.web: DEBUG
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"

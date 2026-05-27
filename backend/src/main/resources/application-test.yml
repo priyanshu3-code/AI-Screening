@@ -1,0 +1,97 @@
+# ============================================
+# Test Profile Configuration
+# ============================================
+spring:
+  config:
+    activate:
+      on-profile: test
+
+server:
+  port: 9090
+
+api:
+  base-url: http://localhost:9090
+  timeout-seconds: 10
+
+# ============================================
+# HuggingFace Configuration (Test)
+# Note: Tests should mock LLM calls, not use real API
+# ============================================
+huggingface:
+  api:
+    url: https://router.huggingface.co/v1
+    key: ${HUGGINGFACE_API_KEY:test_key_placeholder}
+
+# ============================================
+# LLM Configuration (Test)
+# ============================================
+llm:
+  extraction:
+    timeout-ms: 5000
+    max-tokens: 256
+    temperature: 0.3
+
+  interview:
+    timeout-ms: 5000
+    max-tokens: 512
+    temperature: 0.5
+
+  summary:
+    timeout-ms: 5000
+    max-tokens: 256
+    temperature: 0.3
+
+  retry:
+    max-attempts: 1
+    initial-backoff-ms: 100
+    backoff-multiplier: 2
+
+# ============================================
+# File Upload Configuration (Test)
+# ============================================
+file:
+  max-size-mb: 5
+  allowed-types: pdf,txt,doc,docx
+  min-resume-chars: 50
+
+# ============================================
+# Job Description Configuration (Test)
+# ============================================
+job-description:
+  min-chars: 20
+  max-chars: 10000
+
+# ============================================
+# Session Configuration (Test)
+# ============================================
+session:
+  timeout-minutes: 5
+  cleanup-interval-minutes: 1
+  max-concurrent: 10
+
+# ============================================
+# Scoring Configuration (Test)
+# ============================================
+scoring:
+  interview-threshold: 70
+  weight-skills: 0.40
+  weight-experience: 0.30
+  weight-tech-stack: 0.20
+  weight-education: 0.10
+
+# ============================================
+# CORS Configuration (Test)
+# ============================================
+cors:
+  allowed:
+    origins: http://localhost:9090
+
+# ============================================
+# Logging Configuration (Test)
+# ============================================
+logging:
+  level:
+    root: WARN
+    com.resumescreener: INFO
+  pattern:
+    console: "%d{HH:mm:ss} %-5level %msg%n"

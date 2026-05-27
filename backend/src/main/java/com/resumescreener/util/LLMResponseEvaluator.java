@@ -1,17 +1,35 @@
 package com.resumescreener.util;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
+import com.resumescreener.service.HuggingFaceClient;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
- * Multi-Model LLM Response Evaluator
- * Evaluates response quality based on: Accuracy, Coherence, Relevance, Factuality, Completeness
- * Completely replaces Claude evaluation with internal quality metrics
+ * Multi-Model LLM Response Evaluator with AI Judge
+ * Evaluates response quality using:
+ * 1. Heuristic-based metrics (Accuracy, Coherence, Relevance, Factuality, Completeness)
+ * 2. AI Judge (LLM-based evaluation using HuggingFace models)
  */
 @Slf4j
+@Component
 public class LLMResponseEvaluator {
+
+    private static HuggingFaceClient hfClient;
+    private static final String JUDGE_MODEL = "mistralai/Mistral-7B-Instruct-v0.2:featherless-ai";
+    private static final Gson gson = new Gson();
+
+    @Autowired
+    public void setHuggingFaceClient(HuggingFaceClient client) {
+        hfClient = client;
+    }
 
     public static class EvaluationResult {
         public int accuracy;              // 0-100: Factual correctness
@@ -46,6 +64,7 @@ public class LLMResponseEvaluator {
 
     /**
      * Evaluate LLM response quality with comprehensive metrics
+     * Uses both heuristic-based evaluation and AI Judge (if available)
      */
     public static EvaluationResult evaluateResponse(
             String response,
@@ -60,6 +79,14 @@ public class LLMResponseEvaluator {
         result.estimatedTokens = estimateTokens(response);
 
         logEvaluationStart(model, response.length(), executionTimeMs);
+
+        // Try to get AI Judge evaluation (optional, falls back to heuristics)
+        EvaluationResult aiJudgeResult = evaluateWithAIJudge(response, prompt);
+        if (aiJudgeResult != null) {
+            log.info("✓ AI Judge evaluation available - blending results");
+            // Blend AI judge scores (40%) with heuristic scores (60%)
+            return blendEvaluationResults(result, aiJudgeResult);
+        }
 
         // 1. ACCURACY EVALUATION
         result.accuracy = evaluateAccuracy(response, prompt);
@@ -579,5 +606,176 @@ public class LLMResponseEvaluator {
             return text;
         }
         return text.substring(0, maxLength) + "... [TRUNCATED]";
+    }
+
+    /**
+     * AI Judge Evaluation: Uses LLM to evaluate response quality
+     * Falls back to null if HuggingFace client is not available
+     */
+    private static EvaluationResult evaluateWithAIJudge(String response, String prompt) {
+        if (hfClient == null) {
+            log.debug("HuggingFace client not available, skipping AI judge evaluation");
+            return null;
+        }
+
+        try {
+            long startTime = System.currentTimeMillis();
+
+            String judgePrompt = buildAIJudgePrompt(response, prompt);
+            String judgeResponse = hfClient.callLLM(judgePrompt, JUDGE_MODEL);
+
+            long duration = System.currentTimeMillis() - startTime;
+
+            // Parse AI judge response
+            EvaluationResult aiResult = parseAIJudgeResponse(judgeResponse);
+            aiResult.executionTimeMs = duration;
+
+            log.info("✓ AI Judge evaluation completed in {}ms - Score: {}/100", duration, aiResult.score);
+            return aiResult;
+
+        } catch (Exception e) {
+            log.warn("AI Judge evaluation failed, falling back to heuristics: {}", e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Build the prompt for AI Judge
+     */
+    private static String buildAIJudgePrompt(String response, String prompt) {
+        return String.format(
+            "You are an expert quality evaluator. Evaluate this response on a scale of 0-100 across 5 dimensions:\n\n" +
+            "ORIGINAL PROMPT:\n%s\n\n" +
+            "RESPONSE TO EVALUATE:\n%s\n\n" +
+            "Rate this response (0-100) for:\n" +
+            "1. ACCURACY: How factually correct is this? (0-100)\n" +
+            "2. COHERENCE: How well-structured and logical? (0-100)\n" +
+            "3. RELEVANCE: How well does it address the prompt? (0-100)\n" +
+            "4. FACTUALITY: How verifiable and evidence-based? (0-100)\n" +
+            "5. COMPLETENESS: How thorough and complete? (0-100)\n\n" +
+            "Respond in JSON format with exactly this structure:\n" +
+            "{\n" +
+            "  \"accuracy\": <number>,\n" +
+            "  \"coherence\": <number>,\n" +
+            "  \"relevance\": <number>,\n" +
+            "  \"factuality\": <number>,\n" +
+            "  \"completeness\": <number>,\n" +
+            "  \"overall_assessment\": \"<brief explanation>\"\n" +
+            "}\n\n" +
+            "Return ONLY the JSON, no other text.",
+            truncate(prompt, 500), truncate(response, 1000)
+        );
+    }
+
+    /**
+     * Parse AI Judge response JSON
+     */
+    private static EvaluationResult parseAIJudgeResponse(String jsonResponse) {
+        EvaluationResult result = new EvaluationResult();
+
+        try {
+            // Extract JSON from response
+            int jsonStart = jsonResponse.indexOf('{');
+            int jsonEnd = jsonResponse.lastIndexOf('}');
+
+            if (jsonStart == -1 || jsonEnd == -1) {
+                log.warn("Could not find JSON in AI Judge response");
+                return null;
+            }
+
+            String jsonStr = jsonResponse.substring(jsonStart, jsonEnd + 1);
+            JsonObject json = gson.fromJson(jsonStr, JsonObject.class);
+
+            // Parse scores
+            result.accuracy = json.has("accuracy") ? json.get("accuracy").getAsInt() : 70;
+            result.coherence = json.has("coherence") ? json.get("coherence").getAsInt() : 70;
+            result.relevance = json.has("relevance") ? json.get("relevance").getAsInt() : 70;
+            result.factuality = json.has("factuality") ? json.get("factuality").getAsInt() : 70;
+            result.completeness = json.has("completeness") ? json.get("completeness").getAsInt() : 70;
+
+            // Calculate overall score
+            result.score = (result.accuracy + result.coherence + result.relevance
+                          + result.factuality + result.completeness) / 5;
+
+            // Determine quality rating
+            if (result.score >= 85) {
+                result.quality = "EXCELLENT";
+            } else if (result.score >= 70) {
+                result.quality = "GOOD";
+            } else if (result.score >= 50) {
+                result.quality = "ACCEPTABLE";
+            } else {
+                result.quality = "POOR";
+            }
+
+            // Add assessment as strength/weakness
+            if (json.has("overall_assessment")) {
+                String assessment = json.get("overall_assessment").getAsString();
+                result.strengths.add("AI Judge Assessment: " + assessment);
+            }
+
+            return result;
+
+        } catch (Exception e) {
+            log.warn("Failed to parse AI Judge response: {}", e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Blend heuristic evaluation with AI Judge evaluation
+     * Uses weighted average: Heuristics (60%) + AI Judge (40%)
+     */
+    private static EvaluationResult blendEvaluationResults(EvaluationResult heuristic, EvaluationResult aiJudge) {
+        EvaluationResult heuristicEval = new EvaluationResult();
+        heuristicEval.model = heuristic.model;
+        heuristicEval.executionTimeMs = heuristic.executionTimeMs;
+        heuristicEval.responseLength = heuristic.responseLength;
+        heuristicEval.estimatedTokens = heuristic.estimatedTokens;
+
+        // Calculate heuristic scores
+        heuristicEval.accuracy = evaluateAccuracy(heuristic.toString(), "");
+        heuristicEval.coherence = evaluateCoherence(heuristic.toString());
+        heuristicEval.relevance = evaluateRelevance(heuristic.toString(), "");
+        heuristicEval.factuality = evaluateFactuality(heuristic.toString());
+        heuristicEval.completeness = evaluateCompleteness(heuristic.toString(), "");
+
+        // Blend scores: 60% heuristic + 40% AI Judge
+        EvaluationResult blended = new EvaluationResult();
+        blended.model = heuristic.model + " + " + JUDGE_MODEL + " (AI Judge)";
+        blended.executionTimeMs = heuristic.executionTimeMs + aiJudge.executionTimeMs;
+        blended.responseLength = heuristic.responseLength;
+        blended.estimatedTokens = heuristic.estimatedTokens;
+
+        blended.accuracy = (int) ((heuristicEval.accuracy * 0.6) + (aiJudge.accuracy * 0.4));
+        blended.coherence = (int) ((heuristicEval.coherence * 0.6) + (aiJudge.coherence * 0.4));
+        blended.relevance = (int) ((heuristicEval.relevance * 0.6) + (aiJudge.relevance * 0.4));
+        blended.factuality = (int) ((heuristicEval.factuality * 0.6) + (aiJudge.factuality * 0.4));
+        blended.completeness = (int) ((heuristicEval.completeness * 0.6) + (aiJudge.completeness * 0.4));
+
+        blended.score = (blended.accuracy + blended.coherence + blended.relevance
+                        + blended.factuality + blended.completeness) / 5;
+
+        // Determine quality rating
+        if (blended.score >= 85) {
+            blended.quality = "EXCELLENT";
+        } else if (blended.score >= 70) {
+            blended.quality = "GOOD";
+        } else if (blended.score >= 50) {
+            blended.quality = "ACCEPTABLE";
+        } else {
+            blended.quality = "POOR";
+        }
+
+        // Add blending info
+        blended.strengths.addAll(aiJudge.strengths);
+        blended.weaknesses.addAll(aiJudge.weaknesses);
+        blended.issues.addAll(aiJudge.issues);
+        blended.strengths.add("Evaluation: Blended (60% Heuristic + 40% AI Judge)");
+
+        log.info("✓ Blended evaluation: Heuristics ({}) + AI Judge ({}) = {}",
+                heuristicEval.score, aiJudge.score, blended.score);
+
+        return blended;
     }
 }

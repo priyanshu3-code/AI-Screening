@@ -29,6 +29,8 @@ public class Session {
 
     private RecruiterSummary recruiterSummary;
 
+    private MatchScore matchScoreBreakdown;
+
     private long totalProcessingTimeMs;
 
     public Session(String resumeFileName, String resumeText, String jobDescription) {

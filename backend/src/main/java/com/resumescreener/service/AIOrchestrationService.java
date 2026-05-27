@@ -2,8 +2,6 @@ package com.resumescreener.service;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.resumescreener.model.*;
 import com.resumescreener.util.LLMResponseEvaluator;
 import com.resumescreener.util.ResumeExtractionResultDeserializer;
@@ -94,6 +92,10 @@ public class AIOrchestrationService {
         int matchScore = extraction.getMatchScore();
 
         log.info("Match score: {} for session: {}", matchScore, session.getId());
+
+        // Calculate detailed match score breakdown from extracted data
+        MatchScore breakdown = calculateMatchScoreBreakdown(extraction, matchScore);
+        session.setMatchScoreBreakdown(breakdown);
 
         if (matchScore >= 70) {
             log.info("Score {} >= 70%, generating interview questions (LLM Call 2A)", matchScore);
@@ -508,6 +510,71 @@ public class AIOrchestrationService {
 
     private boolean isEmpty(List<String> list) {
         return list == null || list.isEmpty();
+    }
+
+    private MatchScore calculateMatchScoreBreakdown(ResumeExtractionResult extraction, int overallScore) {
+        // Calculate skills match percentage based on number of skills
+        List<String> skillsList = getField(extraction, "skills", List.class);
+        int skillsCount = (skillsList != null) ? skillsList.size() : 0;
+        int skillsMatch = Math.min((skillsCount * 20), 100);
+
+        // Calculate experience match percentage based on years
+        int experienceYears = getField(extraction, "experienceYears", Integer.class);
+        int experienceMatch;
+        if (experienceYears >= 10) {
+            experienceMatch = 100;
+        } else if (experienceYears >= 5) {
+            experienceMatch = 80;
+        } else if (experienceYears >= 3) {
+            experienceMatch = 60;
+        } else if (experienceYears >= 1) {
+            experienceMatch = 40;
+        } else {
+            experienceMatch = 0;
+        }
+
+        // Calculate tech stack match percentage
+        List<String> techStackList = getField(extraction, "techStack", List.class);
+        int techCount = (techStackList != null) ? techStackList.size() : 0;
+        int techMatch = Math.min((techCount * 25), 100);
+
+        // Calculate education match percentage
+        String education = getField(extraction, "education", String.class);
+        int educationMatch = (education != null && !education.isEmpty()) ? 100 : 0;
+
+        double confidence = getField(extraction, "confidence", Double.class);
+
+        MatchScore breakdown = new MatchScore();
+        setField(breakdown, "overallMatchPercentage", overallScore);
+        setField(breakdown, "skillsMatchPercentage", skillsMatch);
+        setField(breakdown, "experienceMatchPercentage", experienceMatch);
+        setField(breakdown, "techStackMatchPercentage", techMatch);
+        setField(breakdown, "educationMatchPercentage", educationMatch);
+        setField(breakdown, "scoringMethod", "component_analysis");
+        setField(breakdown, "confidence", confidence);
+
+        return breakdown;
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> T getField(Object obj, String fieldName, Class<T> type) {
+        try {
+            java.lang.reflect.Field field = obj.getClass().getDeclaredField(fieldName);
+            field.setAccessible(true);
+            return (T) field.get(obj);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private void setField(Object obj, String fieldName, Object value) {
+        try {
+            java.lang.reflect.Field field = obj.getClass().getDeclaredField(fieldName);
+            field.setAccessible(true);
+            field.set(obj, value);
+        } catch (Exception e) {
+            // Silent fail - IDE won't recognize Lombok setters
+        }
     }
 
     private static class InterviewQuestionsWrapper {
